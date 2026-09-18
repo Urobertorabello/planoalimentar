@@ -1,0 +1,899 @@
+<title>Plano Alimentar · Roberto Rabello</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap">
+<style>
+:root {
+  --bg:       #080f1c;
+  --s1:       #0f1a2e;
+  --s2:       #162240;
+  --s3:       #1c2c51;
+  --border:   #1e3058;
+  --blue:     #2577f5;
+  --blue-lo:  rgba(37,119,245,.14);
+  --gold:     #e8b84b;
+  --gold-lo:  rgba(232,184,75,.14);
+  --green:    #2dbc6e;
+  --green-lo: rgba(45,188,110,.12);
+  --red:      #e05454;
+  --red-lo:   rgba(224,84,84,.13);
+  --txt:      #d4e5ff;
+  --txt2:     #7a9ec8;
+  --txt3:     #3f5e88;
+  --circ:     150.8;
+  font-family: 'DM Sans', system-ui, sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--txt);
+  min-height: 100%;
+  padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
+  overflow-x: hidden;
+}
+
+/* ── HEADER ─────────────────────────────────────────────────────── */
+.hdr {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 100;
+  background: var(--s1);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 18px 12px;
+  backdrop-filter: blur(16px);
+}
+.hdr-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.hdr-title { font-size: 16px; font-weight: 700; color: var(--txt); line-height: 1.2; }
+.hdr-sub { font-size: 11px; color: var(--txt2); margin-top: 3px; font-weight: 500; }
+
+/* ring */
+.ring-wrap { cursor: pointer; flex-shrink: 0; }
+.ring-bg   { fill: none; stroke: var(--s3); stroke-width: 4.5; }
+.ring-fill {
+  fill: none; stroke: var(--green); stroke-width: 4.5;
+  stroke-linecap: round;
+  transform: rotate(-90deg); transform-origin: 50% 50%;
+  transition: stroke-dashoffset .5s cubic-bezier(.4,0,.2,1), stroke .3s;
+  stroke-dasharray: var(--circ);
+  stroke-dashoffset: var(--circ);
+}
+.ring-pct { font-family: 'DM Mono', monospace; font-size: 9px; font-weight: 500; fill: var(--txt); text-anchor: middle; dominant-baseline: central; }
+
+/* tabs */
+.tabs { display: flex; gap: 5px; overflow-x: auto; scrollbar-width: none; padding: 0 1px; }
+.tabs::-webkit-scrollbar { display: none; }
+.tab {
+  flex-shrink: 0; padding: 5px 13px; border-radius: 20px;
+  font-size: 12px; font-weight: 600; cursor: pointer;
+  border: 1.5px solid var(--border); background: transparent; color: var(--txt2);
+  transition: all .18s; white-space: nowrap;
+}
+.tab.active      { background: var(--blue); border-color: var(--blue); color: #fff; }
+.tab.is-today    { border-color: var(--gold); color: var(--gold); }
+.tab.active.is-today { background: var(--gold); border-color: var(--gold); color: #0a0f00; }
+
+/* ── START-DATE BAR ──────────────────────────────────────────────── */
+.start-bar {
+  margin: 12px 18px 0;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 10px 14px; border-radius: 12px;
+  background: var(--s2); border: 1px solid var(--border);
+}
+.start-txt { font-size: 12px; color: var(--txt2); line-height: 1.4; }
+.start-txt strong { display: block; font-size: 13px; font-weight: 700; color: var(--txt); margin-bottom: 2px; }
+.start-input {
+  padding: 6px 10px; border-radius: 8px;
+  background: var(--s3); border: 1px solid var(--border);
+  color: var(--txt); font-family: 'DM Mono', monospace; font-size: 12px;
+  outline: none; cursor: pointer; flex-shrink: 0; color-scheme: dark;
+}
+.start-input:focus { border-color: var(--blue); }
+
+/* ── GOAL CARD ───────────────────────────────────────────────────── */
+.goal {
+  margin: 12px 18px 0; padding: 12px 14px;
+  background: var(--blue-lo); border: 1px solid rgba(37,119,245,.22);
+  border-radius: 12px; font-size: 12px; color: var(--txt2); line-height: 1.55;
+}
+.goal-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; color: var(--blue); margin-bottom: 5px; }
+
+/* ── WATER COUNTER ───────────────────────────────────────────────── */
+.water-card {
+  margin: 10px 18px 0;
+  padding: 12px 14px;
+  background: var(--s1); border: 1px solid var(--border);
+  border-radius: 12px;
+  display: flex; align-items: center; gap: 12px;
+}
+.water-emoji { font-size: 22px; flex-shrink: 0; }
+.water-info { flex: 1; min-width: 0; }
+.water-lbl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .7px; color: var(--txt2); margin-bottom: 4px; }
+.water-bar-bg { height: 6px; background: var(--s3); border-radius: 3px; overflow: hidden; }
+.water-bar-fill { height: 100%; background: var(--blue); border-radius: 3px; transition: width .3s; }
+.water-count { font-size: 11px; color: var(--txt2); margin-top: 4px; font-family: 'DM Mono', monospace; }
+.water-count span { color: var(--txt); font-weight: 600; }
+.water-btns { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+.water-btn {
+  width: 30px; height: 30px; border-radius: 9px; font-size: 16px;
+  border: 1.5px solid var(--border); background: var(--s2);
+  color: var(--txt); cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: all .12s; font-weight: 700; font-family: inherit;
+}
+.water-btn:hover { background: var(--s3); border-color: var(--blue); }
+.water-btn:active { transform: scale(.92); }
+.water-num {
+  font-size: 20px; font-weight: 700; font-family: 'DM Mono', monospace;
+  color: var(--blue); min-width: 26px; text-align: center;
+}
+
+/* ── DAY LABEL ───────────────────────────────────────────────────── */
+.day-lbl {
+  margin: 12px 18px 4px;
+  font-size: 14px; font-weight: 700; color: var(--gold);
+  display: flex; align-items: center; gap: 8px;
+}
+.badge {
+  font-size: 9px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase;
+  background: var(--gold-lo); color: var(--gold);
+  border: 1px solid rgba(232,184,75,.28); border-radius: 8px; padding: 2px 7px;
+}
+
+/* ── MEAL CARDS ──────────────────────────────────────────────────── */
+.meals { padding: 6px 18px 12px; display: flex; flex-direction: column; gap: 8px; }
+.card { background: var(--s1); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; transition: border-color .2s; }
+.card.open { border-color: var(--s3); }
+.card-hdr { display: flex; align-items: center; gap: 10px; padding: 12px 14px; cursor: pointer; user-select: none; }
+.card-ic { width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+.ic-cafe { background: rgba(232,184,75,.18); }
+.ic-lm   { background: rgba(37,119,245,.18); }
+.ic-al   { background: rgba(45,188,110,.18); }
+.ic-lt   { background: rgba(155,89,182,.16); }
+.ic-jt   { background: rgba(52,152,219,.18); }
+.ic-ce   { background: rgba(255,120,80,.15); }
+.card-info { flex: 1; min-width: 0; }
+.card-name { font-size: 14px; font-weight: 700; color: var(--txt); }
+.card-time { font-size: 11px; color: var(--txt3); margin-top: 2px; }
+.card-obj  { font-size: 11px; color: var(--blue); margin-top: 3px; font-style: italic; }
+.card-meta { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.pill { font-size: 11px; font-weight: 700; font-family: 'DM Mono', monospace; background: var(--s3); border-radius: 9px; padding: 3px 8px; color: var(--txt2); transition: all .2s; }
+.pill.done { background: var(--green-lo); color: var(--green); }
+.chev { color: var(--txt3); font-size: 11px; transition: transform .2s; }
+.card.open .chev { transform: rotate(180deg); }
+.card-body { display: none; padding: 0 14px 14px; }
+.card.open .card-body { display: block; }
+.items { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+.item { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 9px; background: var(--s2); cursor: pointer; transition: background .12s, opacity .2s; user-select: none; }
+.item.done   { opacity: .52; }
+.item.locked { cursor: default; }
+.item:not(.locked):hover { background: var(--s3); }
+.chk { width: 20px; height: 20px; border-radius: 6px; border: 2px solid var(--border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; transition: all .15s; }
+.item.done .chk { background: var(--green); border-color: var(--green); color: #fff; }
+.item-txt { font-size: 13px; color: var(--txt); line-height: 1.4; flex: 1; }
+.item.done .item-txt { text-decoration: line-through; color: var(--txt3); }
+.tea { margin-top: 8px; padding: 8px 10px; background: var(--green-lo); border: 1px solid rgba(45,188,110,.2); border-radius: 9px; font-size: 12px; color: var(--green); }
+.why { margin-top: 8px; padding: 8px 10px; background: var(--blue-lo); border-radius: 9px; font-size: 11px; color: var(--txt2); line-height: 1.55; }
+.why strong { color: var(--blue); }
+.locked-note { margin-top: 8px; text-align: center; font-size: 11px; color: var(--txt3); }
+
+/* ── BOTTOM BAR ──────────────────────────────────────────────────── */
+.bar {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
+  background: var(--s1); border-top: 1px solid var(--border);
+  padding: 10px 18px;
+  padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+  display: flex; gap: 8px;
+}
+.btn {
+  flex: 1; padding: 11px 4px; border-radius: 12px;
+  font-size: 12px; font-weight: 700; font-family: inherit;
+  cursor: pointer; border: none;
+  display: flex; align-items: center; justify-content: center; gap: 5px;
+  transition: filter .15s, transform .1s;
+}
+.btn:active { transform: scale(.97); }
+.btn-shop { background: var(--blue); color: #fff; }
+.btn-ori  { background: var(--green-lo); color: var(--green); border: 1.5px solid rgba(45,188,110,.3); }
+.btn-cal  { background: var(--gold-lo); color: var(--gold); border: 1.5px solid rgba(232,184,75,.35); }
+
+/* ── SHEETS ──────────────────────────────────────────────────────── */
+.overlay { position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,.65); backdrop-filter: blur(6px); display: none; align-items: flex-end; }
+.overlay.open { display: flex; }
+.sheet { width: 100%; max-height: 88vh; background: var(--s1); border-radius: 20px 20px 0 0; border-top: 1px solid var(--border); display: flex; flex-direction: column; animation: slideUp .28s cubic-bezier(.34,1.22,.64,1); }
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+.handle { width: 36px; height: 4px; border-radius: 2px; background: var(--border); margin: 10px auto 0; }
+.sh-hdr { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px 12px; border-bottom: 1px solid var(--border); }
+.sh-title { font-size: 16px; font-weight: 700; }
+.sh-close { width: 28px; height: 28px; border-radius: 50%; background: var(--s2); border: none; color: var(--txt2); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.sh-body { overflow-y: auto; padding: 16px 18px 24px; flex: 1; }
+.sh-body::-webkit-scrollbar { width: 4px; }
+.sh-body::-webkit-scrollbar-track { background: transparent; }
+.sh-body::-webkit-scrollbar-thumb { background: var(--s3); border-radius: 2px; }
+
+/* shop */
+.chips { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+.chip { padding: 5px 12px; border-radius: 14px; font-size: 12px; font-weight: 600; border: 1.5px solid var(--border); cursor: pointer; color: var(--txt2); background: transparent; transition: all .15s; font-family: inherit; }
+.chip.on { background: var(--blue); border-color: var(--blue); color: #fff; }
+.cat-lbl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; color: var(--txt3); margin: 14px 0 6px; }
+.shop-list { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+.shop-item { padding: 8px 10px; border-radius: 9px; background: var(--s2); font-size: 13px; color: var(--txt); display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.shop-qty { font-size: 11px; color: var(--txt3); font-family: 'DM Mono', monospace; white-space: nowrap; }
+.btn-copy { width: 100%; margin-top: 14px; padding: 13px; border-radius: 12px; background: var(--green); color: #fff; font-size: 14px; font-weight: 700; border: none; cursor: pointer; font-family: inherit; transition: filter .15s; display: flex; align-items: center; justify-content: center; gap: 6px; }
+.btn-copy:hover { filter: brightness(1.1); }
+
+/* calendar */
+.cal-intro { font-size: 13px; color: var(--txt2); margin-bottom: 14px; line-height: 1.6; }
+.cal-day { font-size: 12px; font-weight: 700; color: var(--gold); margin: 16px 0 7px; }
+.cal-day:first-child { margin-top: 0; }
+.cal-links { display: flex; flex-direction: column; gap: 7px; }
+.cal-link { display: flex; align-items: center; gap: 10px; padding: 11px 13px; border-radius: 11px; background: var(--s2); border: 1px solid var(--border); text-decoration: none; transition: border-color .15s; }
+.cal-link:hover { border-color: var(--blue); }
+.cal-link-ic { font-size: 20px; flex-shrink: 0; }
+.cal-link-info { flex: 1; min-width: 0; }
+.cal-link-name { font-size: 13px; font-weight: 700; color: var(--txt); }
+.cal-link-sub  { font-size: 11px; color: var(--txt3); margin-top: 2px; }
+.cal-arr { color: var(--blue); font-size: 13px; flex-shrink: 0; }
+
+/* orientações */
+.ori-section { margin-bottom: 18px; }
+.ori-sec-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; color: var(--txt3); margin-bottom: 8px; }
+.ori-card { padding: 12px 14px; border-radius: 12px; background: var(--s2); border: 1px solid var(--border); margin-bottom: 6px; }
+.ori-card-hdr { display: flex; align-items: center; gap: 10px; }
+.ori-ic { font-size: 20px; flex-shrink: 0; }
+.ori-card-txt { font-size: 13px; color: var(--txt); font-weight: 600; line-height: 1.4; }
+.ori-card-sub { font-size: 12px; color: var(--txt2); margin-top: 3px; line-height: 1.55; }
+.pillar-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.pillar { padding: 8px 12px; border-radius: 10px; background: var(--blue-lo); border: 1px solid rgba(37,119,245,.2); font-size: 12px; color: var(--txt2); font-weight: 500; display: flex; align-items: center; gap: 6px; }
+.pillar-ic { font-size: 15px; }
+.spice-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.spice { padding: 5px 10px; border-radius: 8px; background: var(--s3); font-size: 12px; color: var(--txt2); }
+
+/* exams */
+.exam-row { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; background: var(--s2); margin-bottom: 5px; }
+.exam-ic { font-size: 16px; flex-shrink: 0; }
+.exam-info { flex: 1; min-width: 0; }
+.exam-name { font-size: 12px; font-weight: 700; color: var(--txt); }
+.exam-val { font-size: 11px; font-family: 'DM Mono', monospace; color: var(--txt2); margin-top: 2px; }
+.exam-badge { font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 8px; flex-shrink: 0; }
+.eb-ok   { background: var(--green-lo); color: var(--green); }
+.eb-warn { background: var(--gold-lo);  color: var(--gold); }
+.eb-bad  { background: var(--red-lo);   color: var(--red); }
+.exam-note { font-size: 11px; color: var(--txt3); margin-top: 4px; line-height: 1.5; }
+.exam-updated { font-size: 10px; color: var(--txt3); text-align: center; margin-top: 10px; }
+
+/* toast */
+.toast { position: fixed; bottom: 108px; left: 50%; transform: translateX(-50%); background: var(--green); color: #fff; font-size: 13px; font-weight: 700; padding: 9px 18px; border-radius: 20px; z-index: 999; opacity: 0; pointer-events: none; transition: opacity .3s; white-space: nowrap; box-shadow: 0 4px 20px rgba(0,0,0,.4); }
+.toast.show { opacity: 1; }
+</style>
+
+<div class="hdr" id="hdr">
+  <div class="hdr-row">
+    <div class="hdr-copy">
+      <div class="hdr-title">🥗 Plano Alimentar</div>
+      <div class="hdr-sub" id="hdrSub">Defina a data de início abaixo</div>
+    </div>
+    <svg class="ring-wrap" width="56" height="56" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Progresso hoje">
+      <circle class="ring-bg"   cx="28" cy="28" r="24"/>
+      <circle class="ring-fill" cx="28" cy="28" r="24" id="ringFill"/>
+      <text   class="ring-pct"  x="28" y="28" id="ringPct">0%</text>
+    </svg>
+  </div>
+  <div class="tabs" id="tabs"></div>
+</div>
+
+<div class="start-bar" id="startBar">
+  <div class="start-txt">
+    <strong>📅 Início do ciclo</strong>
+    Dia 1 do plano de 5 dias
+  </div>
+  <input type="date" class="start-input" id="startInput" onchange="onStartChange(this.value)">
+</div>
+
+<div class="goal" id="goal">
+  <div class="goal-label">🎯 Objetivo do dia</div>
+  <span id="goalTxt"></span>
+</div>
+
+<!-- WATER COUNTER -->
+<div class="water-card">
+  <div class="water-emoji">💧</div>
+  <div class="water-info">
+    <div class="water-lbl">Hidratação diária — meta: 10 copos (2,5 L)</div>
+    <div class="water-bar-bg"><div class="water-bar-fill" id="waterFill" style="width:0%"></div></div>
+    <div class="water-count" id="waterCount"><span>0</span> / 10 copos · <span id="waterL">0,0 L</span></div>
+  </div>
+  <div class="water-btns">
+    <button class="water-btn" onclick="addWater(-1)">−</button>
+    <div class="water-num" id="waterNum">0</div>
+    <button class="water-btn" onclick="addWater(1)">+</button>
+  </div>
+</div>
+
+<div class="day-lbl" id="dayLbl"></div>
+<div class="meals" id="meals"></div>
+
+<div class="bar">
+  <button class="btn btn-shop" onclick="openSheet('shop')">🛒 Compras</button>
+  <button class="btn btn-ori"  onclick="openSheet('ori')">🌿 Orientações</button>
+  <button class="btn btn-cal"  onclick="openSheet('cal')">📅 Agenda</button>
+</div>
+
+<!-- SHOPPING SHEET -->
+<div class="overlay" id="shopOverlay" onclick="maybeClose(event,'shopOverlay')">
+  <div class="sheet">
+    <div class="handle"></div>
+    <div class="sh-hdr">
+      <span class="sh-title">🛒 Lista de Compras</span>
+      <button class="sh-close" onclick="closeSheet('shopOverlay')">✕</button>
+    </div>
+    <div class="sh-body">
+      <div class="chips" id="chips"></div>
+      <div id="shopList"></div>
+      <button class="btn-copy" onclick="copyList()">📋 Copiar lista de compras</button>
+    </div>
+  </div>
+</div>
+
+<!-- ORIENTAÇÕES SHEET -->
+<div class="overlay" id="oriOverlay" onclick="maybeClose(event,'oriOverlay')">
+  <div class="sheet">
+    <div class="handle"></div>
+    <div class="sh-hdr">
+      <span class="sh-title">🌿 Orientações</span>
+      <button class="sh-close" onclick="closeSheet('oriOverlay')">✕</button>
+    </div>
+    <div class="sh-body">
+
+      <div class="ori-section">
+        <div class="ori-sec-title">5 Pilares do Seu Plano</div>
+        <div class="pillar-row">
+          <div class="pillar"><span class="pillar-ic">🧠</span> Função cerebral</div>
+          <div class="pillar"><span class="pillar-ic">🔥</span> Reduzir inflamação</div>
+          <div class="pillar"><span class="pillar-ic">💪</span> Massa muscular</div>
+          <div class="pillar"><span class="pillar-ic">🦠</span> Saúde intestinal</div>
+          <div class="pillar"><span class="pillar-ic">😴</span> Qualidade do sono</div>
+        </div>
+      </div>
+
+      <div class="ori-section">
+        <div class="ori-sec-title">Como Usar Este Plano</div>
+        <div class="ori-card">
+          <div class="ori-card-hdr"><span class="ori-ic">⏰</span><div><div class="ori-card-txt">Siga os horários regularmente</div><div class="ori-card-sub">Não pule refeições. A constância é mais importante que a perfeição.</div></div></div>
+        </div>
+        <div class="ori-card">
+          <div class="ori-card-hdr"><span class="ori-ic">🐢</span><div><div class="ori-card-txt">Mastigue lentamente</div><div class="ori-card-sub">Evite comer olhando para celular, computador ou televisão.</div></div></div>
+        </div>
+        <div class="ori-card">
+          <div class="ori-card-hdr"><span class="ori-ic">💧</span><div><div class="ori-card-txt">Beba 2,5 a 3 litros de água por dia</div><div class="ori-card-sub">Distribua ao longo do dia. Use o contador acima para acompanhar.</div></div></div>
+        </div>
+        <div class="ori-card">
+          <div class="ori-card-hdr"><span class="ori-ic">🚶</span><div><div class="ori-card-txt">Caminhada de 10–15 min após almoço ou jantar</div><div class="ori-card-sub">Ajuda no controle da glicemia (102 mg/dL) e na digestão.</div></div></div>
+        </div>
+        <div class="ori-card">
+          <div class="ori-card-hdr"><span class="ori-ic">🔄</span><div><div class="ori-card-txt">Saiu da rotina? Retome na próxima refeição</div><div class="ori-card-sub">Não espere o "dia seguinte". Continue de onde parou.</div></div></div>
+        </div>
+      </div>
+
+      <div class="ori-section">
+        <div class="ori-sec-title">Sobre os Chás</div>
+        <div class="ori-card">
+          <div class="ori-card-hdr"><span class="ori-ic">🌿</span><div><div class="ori-card-txt">Após o almoço</div><div class="ori-card-sub">Digestão, redução de desconfortos gastrointestinais e metabolismo.</div></div></div>
+        </div>
+        <div class="ori-card">
+          <div class="ori-card-hdr"><span class="ori-ic">🌙</span><div><div class="ori-card-txt">Após o jantar</div><div class="ori-card-sub">Relaxamento, qualidade do sono e recuperação. Sempre sem açúcar.</div></div></div>
+        </div>
+      </div>
+
+      <div class="ori-section">
+        <div class="ori-sec-title">Temperos com Propriedades Anti-inflamatórias</div>
+        <div class="spice-row">
+          <span class="spice">🧄 Alho</span>
+          <span class="spice">🧅 Cebola</span>
+          <span class="spice">🟡 Cúrcuma</span>
+          <span class="spice">🌿 Alecrim</span>
+          <span class="spice">🌱 Tomilho</span>
+          <span class="spice">🌿 Salsa</span>
+          <span class="spice">🌿 Cebolinha</span>
+          <span class="spice">🍃 Orégano</span>
+          <span class="spice">🌱 Manjericão</span>
+        </div>
+        <p style="font-size:11px;color:var(--txt3);margin-top:8px;">Prefira temperos naturais. Reduza os industrializados.</p>
+      </div>
+
+      <div class="ori-section">
+        <div class="ori-sec-title">Seus Exames — HC Mais Saúde (10/07/2026)</div>
+
+        <div class="exam-row">
+          <span class="exam-ic">🩸</span>
+          <div class="exam-info">
+            <div class="exam-name">HbA1c (Hemoglobina Glicada)</div>
+            <div class="exam-val">5,8% &nbsp;·&nbsp; Ref: &lt;5,7%</div>
+            <div class="exam-note">Zona limítrofe. Caminhada após refeições e redução de açúcar ajudam.</div>
+          </div>
+          <span class="exam-badge eb-warn">ATENÇÃO</span>
+        </div>
+
+        <div class="exam-row">
+          <span class="exam-ic">🍬</span>
+          <div class="exam-info">
+            <div class="exam-name">Glicose em Jejum</div>
+            <div class="exam-val">102 mg/dL &nbsp;·&nbsp; Ref: 70–100 mg/dL</div>
+            <div class="exam-note">Levemente acima. Melhorou vs nov/2025 (111 mg/dL).</div>
+          </div>
+          <span class="exam-badge eb-warn">ATENÇÃO</span>
+        </div>
+
+        <div class="exam-row">
+          <span class="exam-ic">❤️</span>
+          <div class="exam-info">
+            <div class="exam-name">Colesterol Total</div>
+            <div class="exam-val">222 mg/dL &nbsp;·&nbsp; Ref: &lt;200 mg/dL</div>
+            <div class="exam-note">Limítrofe. Melhorou vs nov/2025 (238 mg/dL).</div>
+          </div>
+          <span class="exam-badge eb-warn">LIMÍTROFE</span>
+        </div>
+
+        <div class="exam-row">
+          <span class="exam-ic">💛</span>
+          <div class="exam-info">
+            <div class="exam-name">HDL (Colesterol Bom)</div>
+            <div class="exam-val">52 mg/dL &nbsp;·&nbsp; Desejável: &gt;60 mg/dL</div>
+            <div class="exam-note">Azeite, castanhas e atividade física ajudam a elevar o HDL.</div>
+          </div>
+          <span class="exam-badge eb-warn">ATENÇÃO</span>
+        </div>
+
+        <div class="exam-row">
+          <span class="exam-ic">💙</span>
+          <div class="exam-info">
+            <div class="exam-name">LDL Colesterol</div>
+            <div class="exam-val">150 mg/dL &nbsp;·&nbsp; Anteriores: 151,5 e 184 mg/dL</div>
+            <div class="exam-note">Melhorando consistentemente com o plano alimentar.</div>
+          </div>
+          <span class="exam-badge eb-warn">MONITORAR</span>
+        </div>
+
+        <div class="exam-row">
+          <span class="exam-ic">🔶</span>
+          <div class="exam-info">
+            <div class="exam-name">Ferritina</div>
+            <div class="exam-val">621,4 ng/mL &nbsp;·&nbsp; Ref: 30–400 ng/mL</div>
+            <div class="exam-note">Elevada. Anterior: 608,9 (nov/2025). Inflamação e sobrecarga de ferro. Discuta com seu médico.</div>
+          </div>
+          <span class="exam-badge eb-bad">ELEVADA</span>
+        </div>
+
+        <div class="exam-row">
+          <span class="exam-ic">💪</span>
+          <div class="exam-info">
+            <div class="exam-name">CPK (Creatinoquinase)</div>
+            <div class="exam-val">237 U/L &nbsp;·&nbsp; Ref: 25–190 U/L</div>
+            <div class="exam-note">Elevada — pode indicar esforço muscular recente ou inflamação muscular.</div>
+          </div>
+          <span class="exam-badge eb-bad">ELEVADA</span>
+        </div>
+
+        <div class="exam-row">
+          <span class="exam-ic">🟢</span>
+          <div class="exam-info">
+            <div class="exam-name">PCR Alta Sensibilidade</div>
+            <div class="exam-val">0,40 mg/L &nbsp;·&nbsp; Ref cardiovasc.: &lt;2,0</div>
+            <div class="exam-note">Excelente! Inflamação sistêmica sob controle.</div>
+          </div>
+          <span class="exam-badge eb-ok">ÓTIMO</span>
+        </div>
+
+        <div class="exam-row">
+          <span class="exam-ic">🟢</span>
+          <div class="exam-info">
+            <div class="exam-name">Hemograma</div>
+            <div class="exam-val">Hemácias 5,23 · Hb 14,9 · Leucócitos 6.600</div>
+            <div class="exam-note">Todos os parâmetros dentro da normalidade.</div>
+          </div>
+          <span class="exam-badge eb-ok">NORMAL</span>
+        </div>
+
+        <div class="exam-row">
+          <span class="exam-ic">🟢</span>
+          <div class="exam-info">
+            <div class="exam-name">VHS · PTH · Transferrina</div>
+            <div class="exam-val">VHS: 4 mm · PTH: 70,84 pg/mL · Transf: 220 mg/dL</div>
+          </div>
+          <span class="exam-badge eb-ok">NORMAL</span>
+        </div>
+
+        <p class="exam-updated">⚠️ Estes dados são informativos. Sempre consulte sua nutricionista e médico — Dra. Ana Júlia Canfild (CRN2 9599).</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- CALENDAR SHEET -->
+<div class="overlay" id="calOverlay" onclick="maybeClose(event,'calOverlay')">
+  <div class="sheet">
+    <div class="handle"></div>
+    <div class="sh-hdr">
+      <span class="sh-title">📅 Google Agenda</span>
+      <button class="sh-close" onclick="closeSheet('calOverlay')">✕</button>
+    </div>
+    <div class="sh-body">
+      <p class="cal-intro">Toque em qualquer refeição para criar um lembrete recorrente no Google Agenda — sem precisar fazer login. O evento se repete a cada 5 dias automaticamente.</p>
+      <div id="calLinks"></div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">✅ Lista copiada!</div>
+
+<script>
+// ── PLAN ─────────────────────────────────────────────────────────────
+const NAMES = ['Dia 1 — Foco & Energia','Dia 2 — Intestino & Massa','Dia 3 — Memória & Saciedade','Dia 4 — Recuperação & Músculos','Dia 5 — Anti-inflamação'];
+
+const PLAN = [
+  {
+    goal: 'Fornecer energia estável, melhorar o foco e concentração, e nutrir o cérebro com colina e proteínas de alta qualidade.',
+    meals: [
+      { id:'d1_cafe', name:'Café da Manhã', ic:'☀️', cls:'ic-cafe', time:'07:00',
+        obj:'Ativar o cérebro e melhorar o foco',
+        items:['Omelete (2 ovos ≈ 100 g)','Pão sem glúten (1 fatia = 35 g)','Espinafre refogado (½ xícara = 40 g)','Tomate refogado (½ un = 50 g)','Azeite extravirgem (1 col. chá = 5 ml)','Café sem açúcar (150 ml)'],
+        why:'Ovos fornecem colina para memória e foco. Espinafre e tomate: antioxidantes e ferro.', tea:null },
+      { id:'d1_lm', name:'Lanche da Manhã', ic:'🍌', cls:'ic-lm', time:'10:00',
+        items:['Banana média (90–100 g)','Castanha-do-Brasil (2 un = 10 g)','Canela a gosto'], tea:null },
+      { id:'d1_al', name:'Almoço', ic:'🍽️', cls:'ic-al', time:'12:30',
+        items:['Filé bovino grelhado (180 g)','Arroz integral cozido (90 g)','Brócolis refogado (45 g)','Cenoura refogada (45 g)','Salada verde à vontade','Azeite extravirgem (5 ml)'],
+        tea:'🍃 Chá: Hortelã ou erva-doce (200 ml) — sem açúcar' },
+      { id:'d1_lt', name:'Lanche da Tarde', ic:'🥤', cls:'ic-lt', time:'15:30',
+        items:['Whey protein vegetal (30 g = 1 scoop)','Leite vegetal sem açúcar (150 ml)','Banana (90–100 g)','Linhaça moída (1 col. sopa = 10 g)'], tea:null },
+      { id:'d1_jt', name:'Jantar', ic:'🌙', cls:'ic-jt', time:'19:00',
+        items:['Tilápia grelhada (180 g)','Purê de batata-doce (90 g)','Abobrinha refogada (90 g)','Salada verde','Azeite extravirgem (5 ml)'],
+        tea:'🍃 Chá: Camomila, melissa ou capim-cidreira (200 ml) — sem açúcar' },
+      { id:'d1_ce', name:'Ceia', ic:'🥝', cls:'ic-ce', time:'21:00',
+        items:['Kiwi (2 unidades = 140–160 g)','Glutamina conforme prescrição'], tea:null }
+    ]
+  },
+  {
+    goal: 'Saúde intestinal, energia constante, manutenção da massa muscular e redução da inflamação.',
+    meals: [
+      { id:'d2_cafe', name:'Café da Manhã', ic:'☀️', cls:'ic-cafe', time:'07:00',
+        items:['Iogurte sem lactose (170 g)','Aveia em flocos (2 col. sopa = 20 g)','Mamão (1 fatia = 120 g)','Canela a gosto'], tea:null },
+      { id:'d2_lm', name:'Lanche da Manhã', ic:'🍎', cls:'ic-lm', time:'10:00',
+        items:['Maçã média (130 g)','Castanha-do-Brasil (2 un = 10 g)'], tea:null },
+      { id:'d2_al', name:'Almoço', ic:'🍽️', cls:'ic-al', time:'12:30',
+        items:['Frango grelhado (180 g)','Purê de batata-doce (90 g)','Mix de legumes refogados (90 g)','Salada verde à vontade','Azeite extravirgem (5 ml)'],
+        tea:'🍃 Chá: Gengibre com hortelã (200 ml) — sem açúcar' },
+      { id:'d2_lt', name:'Lanche da Tarde', ic:'🥚', cls:'ic-lt', time:'15:30',
+        items:['Ovos cozidos (2 unidades = 100 g)'], tea:null },
+      { id:'d2_jt', name:'Jantar', ic:'🌙', cls:'ic-jt', time:'19:00',
+        items:['Sopa de lentilha com legumes (300 ml)','Frango desfiado (100 g)'],
+        tea:'🍃 Chá: Melissa ou camomila (200 ml) — sem açúcar' },
+      { id:'d2_ce', name:'Ceia', ic:'🥝', cls:'ic-ce', time:'21:00',
+        items:['Kiwi (2 unidades = 140–160 g)','Glutamina conforme prescrição'], tea:null }
+    ]
+  },
+  {
+    goal: 'Foco, memória, saciedade, energia estável e saúde intestinal.',
+    meals: [
+      { id:'d3_cafe', name:'Café da Manhã', ic:'☀️', cls:'ic-cafe', time:'07:00',
+        items:['Ovos (2 un = 100 g)','Aveia em flocos (20 g)','Banana média (90–100 g)','Linhaça moída (10 g)','Canela a gosto'], tea:null },
+      { id:'d3_lm', name:'Lanche da Manhã', ic:'🍎', cls:'ic-lm', time:'10:00',
+        items:['Maçã média (130 g)','Castanha-do-Brasil (2 un = 10 g)'], tea:null },
+      { id:'d3_al', name:'Almoço', ic:'🍽️', cls:'ic-al', time:'12:30',
+        items:['Carne bovina magra ao molho de tomate (180 g)','Polenta cozida (90 g)','Legumes refogados (90 g)','Salada verde à vontade','Azeite extravirgem (5 ml)'],
+        tea:'🍃 Chá verde (200 ml) — sem açúcar' },
+      { id:'d3_lt', name:'Lanche da Tarde', ic:'🥤', cls:'ic-lt', time:'15:30',
+        items:['Iogurte natural sem lactose (170 g)','Morangos (5 un = 80 g)','Nozes (4 metades = 10 g)'], tea:null },
+      { id:'d3_jt', name:'Jantar', ic:'🌙', cls:'ic-jt', time:'19:00',
+        items:['Sopa de frango com legumes (350 ml)','→ Frango desfiado (150 g)','→ Cenoura, abobrinha, chuchu, couve','→ Caldo caseiro'],
+        tea:'🍃 Chá: Camomila ou melissa (200 ml) — sem açúcar' },
+      { id:'d3_ce', name:'Ceia', ic:'🥝', cls:'ic-ce', time:'21:00',
+        items:['Kiwi (2 un = 140–160 g)','Glutamina (5 g)'], tea:null }
+    ]
+  },
+  {
+    goal: 'Energia constante, músculos, cérebro, intestino, foco e recuperação.',
+    meals: [
+      { id:'d4_cafe', name:'Café da Manhã', ic:'☀️', cls:'ic-cafe', time:'07:00',
+        items:['Omelete (2 ovos = 100 g)','Pão sem glúten (1 fatia = 35 g)','Mamão (1 fatia = 120 g)','Azeite extravirgem (5 ml)'], tea:null },
+      { id:'d4_lm', name:'Lanche da Manhã', ic:'🍊', cls:'ic-lm', time:'10:00',
+        items:['Laranja média (1 un = 150 g)','Castanha-do-Brasil (2 un = 10 g)'], tea:null },
+      { id:'d4_al', name:'Almoço', ic:'🍽️', cls:'ic-al', time:'12:30',
+        items:['Filé de frango ou carne bovina (180 g)','Arroz integral (90 g)','Feijão cozido (100 g)','Couve refogada (60 g)','Salada verde à vontade','Azeite extravirgem (5 ml)'],
+        tea:'🍃 Chá: Hibisco com gengibre (200 ml) — sem açúcar' },
+      { id:'d4_lt', name:'Lanche da Tarde', ic:'🥤', cls:'ic-lt', time:'15:30',
+        items:['Whey protein (30 g = 1 scoop)','Leite vegetal sem açúcar (150 ml)','Banana média (90–100 g)','Canela a gosto'], tea:null },
+      { id:'d4_jt', name:'Jantar', ic:'🌙', cls:'ic-jt', time:'19:00',
+        items:['Filé acebolado (180 g)','Legumes cozidos (90 g)','Salada verde à vontade','Azeite extravirgem (5 ml)'],
+        tea:'🍃 Chá: Camomila ou capim-cidreira (200 ml) — sem açúcar' },
+      { id:'d4_ce', name:'Ceia', ic:'🥝', cls:'ic-ce', time:'21:00',
+        items:['Kiwi (2 un = 140–160 g)','Glutamina (5 g)'], tea:null }
+    ]
+  },
+  {
+    goal: 'Foco, redução da inflamação, massa muscular, saúde intestinal, saciedade e energia estável.',
+    meals: [
+      { id:'d5_cafe', name:'Café da Manhã', ic:'☀️', cls:'ic-cafe', time:'07:00',
+        items:['Pão sem glúten (2 fatias = 70 g)','Queijo minas frescal (40 g = 2 fatias)','Ovo mexido (1 un = 50 g)','Tomate (½ un = 50 g)','Orégano a gosto'], tea:null },
+      { id:'d5_lm', name:'Lanche da Manhã', ic:'🍎', cls:'ic-lm', time:'10:00',
+        items:['Maçã média (130 g)','Castanha-do-Brasil (2 un = 10 g)'], tea:null },
+      { id:'d5_al', name:'Almoço', ic:'🍽️', cls:'ic-al', time:'12:30',
+        items:['Peixe assado (180 g = 2 filés médios)','Arroz integral (90 g)','Legumes refogados (90 g)','Salada verde à vontade','Azeite extravirgem (5 ml)'],
+        tea:'🍃 Chá verde (200 ml) — sem açúcar' },
+      { id:'d5_lt', name:'Lanche da Tarde', ic:'🥑', cls:'ic-lt', time:'15:30',
+        items:['Abacate (120 g ≈ ½ un pequena)','Laranja média (1 un = 150 g)'], tea:null },
+      { id:'d5_jt', name:'Jantar', ic:'🌙', cls:'ic-jt', time:'19:00',
+        items:['Omelete (3 ovos = 150 g)','Espinafre refogado (40 g)','Cogumelos salteados (50 g)','Salada verde à vontade','Azeite extravirgem (5 ml)'],
+        tea:'🍃 Chá: Melissa ou camomila (200 ml) — sem açúcar' },
+      { id:'d5_ce', name:'Ceia', ic:'🌙', cls:'ic-ce', time:'21:00',
+        items:['Mamão (1 fatia média = 120 g)','Glutamina (5 g)'], tea:null }
+    ]
+  }
+];
+
+// ── STATE ─────────────────────────────────────────────────────────────
+const SK = 'diet_v3';
+let S = { startDate: null, checked: {}, open: {}, water: {} };
+let vDay = 0;
+let shopSel = new Set([0]);
+
+function load() {
+  try {
+    const r = JSON.parse(localStorage.getItem(SK)||'{}');
+    S.startDate = r.startDate || null;
+    S.checked   = r.checked   || {};
+    S.open      = r.open      || {};
+    S.water     = r.water     || {};
+  } catch(e) {}
+}
+function save() { try { localStorage.setItem(SK, JSON.stringify(S)); } catch(e) {} }
+
+// ── DATE ──────────────────────────────────────────────────────────────
+function today() { const d=new Date(); return new Date(d.getFullYear(),d.getMonth(),d.getDate()); }
+function parse(s) { const [y,m,d]=s.split('-').map(Number); return new Date(y,m-1,d); }
+function fmt(d) { return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function todayIdx() {
+  if (!S.startDate) return 0;
+  const diff = Math.floor((today()-parse(S.startDate))/86400000);
+  return ((diff%5)+5)%5;
+}
+function isToday(i) { return !!S.startDate && i===todayIdx(); }
+function dateOfDay(di) {
+  if (!S.startDate) return 'nodate';
+  const t=today(), tid=todayIdx();
+  const back=((tid-di)%5+5)%5;
+  const d=new Date(t); d.setDate(d.getDate()-back);
+  return fmt(d);
+}
+function ck(mealId,idx) { return dateOfDay(vDay)+'_'+mealId+'_'+idx; }
+function isChk(mealId,idx) { return !!S.checked[ck(mealId,idx)]; }
+function togChk(mealId,idx) { const k=ck(mealId,idx); if(S.checked[k]) delete S.checked[k]; else S.checked[k]=true; save(); }
+
+// ── WATER ─────────────────────────────────────────────────────────────
+const WATER_GOAL = 10;
+function todayKey() { return 'w_'+fmt(today()); }
+function getWater() { return S.water[todayKey()]||0; }
+function addWater(n) {
+  const k=todayKey();
+  const v=Math.max(0,Math.min(WATER_GOAL+3,(S.water[k]||0)+n));
+  S.water[k]=v; save(); renderWater();
+}
+function renderWater() {
+  const v=getWater();
+  const pct=Math.min(100,Math.round(v/WATER_GOAL*100));
+  document.getElementById('waterFill').style.width=pct+'%';
+  document.getElementById('waterNum').textContent=v;
+  const cnt=document.getElementById('waterCount');
+  cnt.innerHTML='<span>'+v+'</span> / '+WATER_GOAL+' copos · <span id="waterL">'+(v*0.25).toFixed(1).replace('.',',')+' L</span>';
+  document.getElementById('waterFill').style.background = v>=WATER_GOAL?'var(--green)':'var(--blue)';
+}
+function onStartChange(v) { S.startDate=v; save(); vDay=todayIdx(); render(); }
+
+// ── RENDER ────────────────────────────────────────────────────────────
+function render() { renderTabs(); renderGoal(); renderDayLbl(); renderMeals(); renderRing(); renderHeader(); renderWater(); }
+
+function renderHeader() {
+  const el=document.getElementById('hdrSub');
+  if(!S.startDate){ el.textContent='Defina a data de início abaixo'; return; }
+  const t=today();
+  el.textContent=t.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
+  document.getElementById('startInput').value=S.startDate;
+}
+
+function renderTabs() {
+  const c=document.getElementById('tabs'); c.innerHTML='';
+  for(let i=0;i<5;i++){
+    const b=document.createElement('button');
+    b.className='tab'+(i===vDay?' active':'')+(isToday(i)?' is-today':'');
+    b.textContent=(isToday(i)?'⭐ ':'')+'Dia '+(i+1);
+    b.onclick=()=>{ vDay=i; render(); };
+    c.appendChild(b);
+  }
+}
+
+function renderGoal() { document.getElementById('goalTxt').textContent=PLAN[vDay].goal; }
+
+function renderDayLbl() {
+  const el=document.getElementById('dayLbl');
+  el.innerHTML=NAMES[vDay]+(isToday(vDay)?' <span class="badge">HOJE</span>':'');
+}
+
+function renderMeals() {
+  const c=document.getElementById('meals'); c.innerHTML='';
+  const locked=!isToday(vDay);
+  PLAN[vDay].meals.forEach(m=>{
+    const tot=m.items.length;
+    const done=m.items.filter((_,i)=>isChk(m.id,i)).length;
+    const open=!!S.open[m.id];
+    const card=document.createElement('div');
+    card.className='card'+(open?' open':''); card.id='c_'+m.id;
+    card.innerHTML=`
+      <div class="card-hdr" onclick="togCard('${m.id}')">
+        <div class="card-ic ${m.cls}">${m.ic}</div>
+        <div class="card-info">
+          <div class="card-name">${m.name}</div>
+          <div class="card-time">🕐 ${m.time}</div>
+          ${m.obj?`<div class="card-obj">${m.obj}</div>`:''}
+        </div>
+        <div class="card-meta">
+          <span class="pill${done===tot&&tot>0?' done':''}">${done}/${tot}</span>
+          <span class="chev">▾</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <ul class="items">${m.items.map((it,i)=>{
+          const chk=isChk(m.id,i);
+          return `<li class="item${chk?' done':''}${locked?' locked':''}" onclick="togItem('${m.id}',${i},${locked})">
+            <span class="chk">${chk?'✓':''}</span>
+            <span class="item-txt">${it}</span>
+          </li>`;
+        }).join('')}</ul>
+        ${m.tea?`<div class="tea">${m.tea}</div>`:''}
+        ${m.why?`<div class="why"><strong>💡 Por quê?</strong> ${m.why}</div>`:''}
+        ${locked?`<p class="locked-note">🔒 Marcações disponíveis apenas no dia atual</p>`:''}
+      </div>`;
+    c.appendChild(card);
+  });
+}
+
+function renderRing() {
+  const day=PLAN[vDay]; let tot=0,done=0;
+  day.meals.forEach(m=>m.items.forEach((_,i)=>{ tot++; if(isChk(m.id,i)) done++; }));
+  const pct=tot>0?Math.round(done/tot*100):0;
+  const circ=150.8;
+  const fill=document.getElementById('ringFill');
+  fill.style.strokeDashoffset=circ-(circ*pct/100);
+  fill.style.stroke=pct===100?'#e8b84b':pct>50?'#2dbc6e':'#2577f5';
+  document.getElementById('ringPct').textContent=pct+'%';
+}
+
+function togCard(id) {
+  S.open[id]=!S.open[id]; save();
+  const c=document.getElementById('c_'+id);
+  if(c) c.classList.toggle('open',!!S.open[id]);
+}
+function togItem(id,idx,locked) { if(locked) return; togChk(id,idx); render(); }
+
+// ── SHEETS ────────────────────────────────────────────────────────────
+function openSheet(id) {
+  if(id==='shop'){ renderChips(); renderShopList(); document.getElementById('shopOverlay').classList.add('open'); }
+  else if(id==='ori'){ document.getElementById('oriOverlay').classList.add('open'); }
+  else { renderCal(); document.getElementById('calOverlay').classList.add('open'); }
+}
+function closeSheet(id) { document.getElementById(id).classList.remove('open'); }
+function maybeClose(e,id) { if(e.target.id===id) closeSheet(id); }
+
+// ── SHOPPING ──────────────────────────────────────────────────────────
+const CATS = {
+  'Proteínas':             [/frango|bovino|filé|tilápia|peixe|omelete|ovo|ovos|whey|lentilha|queijo|iogurte|carne/i],
+  'Carboidratos e Frutas': [/arroz|batata|polenta|pão|aveia|banana|maçã|mamão|kiwi|laranja|morango|abacate|feijão/i],
+  'Vegetais e Legumes':    [/espinafre|tomate|brócolis|cenoura|abobrinha|couve|salada|legumes|chuchu|cogumelo|cebola/i],
+  'Gorduras e Suplementos':[/azeite|castanha|nozes|linhaça|glutamina|leite vegetal|canela/i],
+};
+function catOf(item) { for(const [cat,pats] of Object.entries(CATS)) if(pats.some(p=>p.test(item))) return cat; return 'Outros'; }
+
+function collectItems() {
+  const map={};
+  shopSel.forEach(d=>{
+    PLAN[d].meals.forEach(m=>{
+      m.items.forEach(it=>{
+        if(it.startsWith('→')) return;
+        const key=it.replace(/\(.*?\)/g,'').replace(/\d+[\s]*g|[\s]*ml|col\..*|un\..*|scoop.*/gi,'').trim().toLowerCase();
+        if(!key) return;
+        if(!map[key]) map[key]={text:it,count:1,cat:catOf(it)}; else map[key].count++;
+      });
+    });
+  });
+  return Object.values(map);
+}
+
+function renderChips() {
+  const c=document.getElementById('chips'); c.innerHTML='';
+  for(let i=0;i<5;i++){
+    const b=document.createElement('button');
+    b.className='chip'+(shopSel.has(i)?' on':'');
+    b.textContent='Dia '+(i+1);
+    b.onclick=()=>{ if(shopSel.has(i)){if(shopSel.size>1)shopSel.delete(i);}else shopSel.add(i); renderChips(); renderShopList(); };
+    c.appendChild(b);
+  }
+  const all=document.createElement('button');
+  all.className='chip'+(shopSel.size===5?' on':'');
+  all.textContent='Todos';
+  all.onclick=()=>{ shopSel=shopSel.size===5?new Set([0]):new Set([0,1,2,3,4]); renderChips(); renderShopList(); };
+  c.appendChild(all);
+}
+
+function renderShopList() {
+  const items=collectItems(), bycat={};
+  items.forEach(i=>{ if(!bycat[i.cat])bycat[i.cat]=[]; bycat[i.cat].push(i); });
+  const order=['Proteínas','Carboidratos e Frutas','Vegetais e Legumes','Gorduras e Suplementos','Outros'];
+  let h='';
+  order.forEach(cat=>{
+    if(!bycat[cat]?.length) return;
+    h+=`<div class="cat-lbl">${cat}</div><ul class="shop-list">`;
+    bycat[cat].forEach(i=>{ h+=`<li class="shop-item"><span>${i.text}</span>${i.count>1?`<span class="shop-qty">×${i.count}</span>`:''}</li>`; });
+    h+='</ul>';
+  });
+  document.getElementById('shopList').innerHTML=h;
+}
+
+function copyList() {
+  const items=collectItems(), bycat={};
+  items.forEach(i=>{ if(!bycat[i.cat])bycat[i.cat]=[]; bycat[i.cat].push(i); });
+  const days=[...shopSel].map(d=>'Dia '+(d+1)).join(', ');
+  let txt=`🛒 Lista de Compras — Plano Alimentar (${days})\n\n`;
+  ['Proteínas','Carboidratos e Frutas','Vegetais e Legumes','Gorduras e Suplementos','Outros'].forEach(cat=>{
+    if(!bycat[cat]?.length) return;
+    txt+=`📌 ${cat}\n`;
+    bycat[cat].forEach(i=>{ txt+=`  • ${i.text}${i.count>1?' (×'+i.count+')':''}\n`; });
+    txt+='\n';
+  });
+  navigator.clipboard.writeText(txt).then(()=>{
+    const t=document.getElementById('toast');
+    t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2200);
+  }).catch(()=>{ alert(txt); });
+}
+
+// ── CALENDAR ──────────────────────────────────────────────────────────
+function calFmt(d) {
+  return d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0')+'T'+
+    String(d.getHours()).padStart(2,'0')+String(d.getMinutes()).padStart(2,'0')+'00';
+}
+function calUrl(mealName,time,di) {
+  let base;
+  if(S.startDate){ base=parse(S.startDate); base.setDate(base.getDate()+di); }
+  else { base=today(); }
+  const [h,m]=time.split(':').map(Number);
+  const s=new Date(base.getFullYear(),base.getMonth(),base.getDate(),h,m);
+  const e=new Date(s.getTime()+30*60000);
+  const txt=encodeURIComponent('🥗 '+mealName+' — Plano Alimentar');
+  const det=encodeURIComponent('Dia '+(di+1)+' do ciclo de 5 dias\n'+NAMES[di]);
+  const dates=calFmt(s)+'/'+calFmt(e);
+  const recur=encodeURIComponent('RRULE:FREQ=DAILY;INTERVAL=5;COUNT=73');
+  return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${txt}&details=${det}&dates=${dates}&ctz=America%2FSao_Paulo&recur=${recur}`;
+}
+
+function renderCal() {
+  let h='';
+  PLAN.forEach((day,di)=>{
+    h+=`<div class="cal-day">${NAMES[di]}</div><div class="cal-links">`;
+    day.meals.forEach(m=>{
+      const url=calUrl(m.name,m.time,di);
+      h+=`<a class="cal-link" href="${url}" target="_blank" rel="noopener">
+        <span class="cal-link-ic">${m.ic}</span>
+        <div class="cal-link-info">
+          <div class="cal-link-name">${m.name}</div>
+          <div class="cal-link-sub">${m.time} · repete a cada 5 dias</div>
+        </div>
+        <span class="cal-arr">↗</span>
+      </a>`;
+    });
+    h+='</div>';
+  });
+  document.getElementById('calLinks').innerHTML=h;
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────
+load();
+if(!S.startDate){ S.startDate=fmt(today()); save(); }
+document.getElementById('startInput').value=S.startDate;
+vDay=todayIdx();
+if(!Object.keys(S.open).length){ const fid=PLAN[vDay].meals[0].id; S.open[fid]=true; save(); }
+render();
+</script>
