@@ -179,11 +179,11 @@ body {
   background: var(--s1); border-top: 1px solid var(--border);
   padding: 10px 18px;
   padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
-  display: flex; gap: 8px;
+  display: flex; gap: 5px;
 }
 .btn {
-  flex: 1; padding: 11px 4px; border-radius: 12px;
-  font-size: 12px; font-weight: 700; font-family: inherit;
+  flex: 1; padding: 11px 2px; border-radius: 12px;
+  font-size: 11px; font-weight: 700; font-family: inherit;
   cursor: pointer; border: none;
   display: flex; align-items: center; justify-content: center; gap: 5px;
   transition: filter .15s, transform .1s;
@@ -261,6 +261,58 @@ body {
 /* toast */
 .toast { position: fixed; bottom: 108px; left: 50%; transform: translateX(-50%); background: var(--green); color: #fff; font-size: 13px; font-weight: 700; padding: 9px 18px; border-radius: 20px; z-index: 999; opacity: 0; pointer-events: none; transition: opacity .3s; white-space: nowrap; box-shadow: 0 4px 20px rgba(0,0,0,.4); }
 .toast.show { opacity: 1; }
+
+/* ── DASHBOARD ───────────────────────────────────────────────────── */
+.btn-dash { background: rgba(155,89,182,.18); color: #c39bd3; border: 1.5px solid rgba(155,89,182,.3); }
+.dash-sec-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; color: var(--txt3); margin-bottom: 10px; }
+.stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+.stat-card { background: var(--s2); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; }
+.stat-num { font-size: 22px; font-weight: 700; font-family: 'DM Mono', monospace; color: var(--txt); line-height: 1.1; }
+.stat-unit { font-size: 13px; color: var(--txt3); font-weight: 400; }
+.stat-lbl { font-size: 11px; color: var(--txt2); margin-top: 4px; }
+.stat-trend { font-size: 11px; font-family: 'DM Mono', monospace; margin-top: 3px; }
+.trend-up { color: var(--red); }
+.trend-dn { color: var(--green); }
+.dash-sec { margin-bottom: 22px; }
+.dash-form { background: var(--s2); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 10px; }
+.input-row { display: flex; gap: 8px; margin-bottom: 10px; align-items: flex-end; flex-wrap: wrap; }
+.input-row:last-child { margin-bottom: 0; }
+.input-grp { flex: 1; min-width: 70px; }
+.input-lbl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; color: var(--txt3); margin-bottom: 4px; }
+.dash-input, .dash-select {
+  width: 100%; padding: 8px 10px; border-radius: 9px;
+  background: var(--s3); border: 1px solid var(--border);
+  color: var(--txt); font-size: 14px; outline: none; color-scheme: dark;
+}
+.dash-input { font-family: 'DM Mono', monospace; }
+.dash-select { font-family: inherit; font-size: 13px; }
+.dash-input:focus, .dash-select:focus { border-color: var(--blue); }
+.dash-btn { padding: 9px 16px; border-radius: 10px; background: var(--blue); color: #fff; font-size: 13px; font-weight: 700; border: none; cursor: pointer; font-family: inherit; transition: filter .15s; white-space: nowrap; align-self: flex-end; }
+.dash-btn:active { filter: brightness(.85); }
+.hist-list { display: flex; flex-direction: column; gap: 5px; }
+.hist-item { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 10px; background: var(--s2); }
+.hist-date { font-size: 11px; color: var(--txt3); font-family: 'DM Mono', monospace; flex-shrink: 0; white-space: nowrap; }
+.hist-val { font-size: 14px; font-weight: 700; font-family: 'DM Mono', monospace; color: var(--txt); flex: 1; }
+.hist-sub { font-size: 11px; color: var(--txt2); margin-top: 2px; }
+.hist-del { background: none; border: none; color: var(--txt3); font-size: 14px; cursor: pointer; padding: 0 4px; transition: color .12s; flex-shrink: 0; }
+.hist-del:hover { color: var(--red); }
+.act-badge { font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 7px; background: var(--blue-lo); color: var(--blue); flex-shrink: 0; white-space: nowrap; }
+.water-bars { display: flex; align-items: flex-end; gap: 4px; height: 52px; margin: 8px 0 4px; }
+.w-bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: flex-end; gap: 3px; }
+.w-bar { width: 100%; border-radius: 3px 3px 0 0; background: var(--blue); min-height: 3px; }
+.w-bar.goal { background: var(--green); }
+.w-bar-d { font-size: 8px; color: var(--txt3); font-family: 'DM Mono', monospace; text-align: center; }
+.adh-row { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
+.adh-lbl { font-size: 11px; color: var(--txt2); width: 40px; flex-shrink: 0; }
+.adh-bar-bg { flex: 1; height: 8px; background: var(--s3); border-radius: 4px; overflow: hidden; }
+.adh-fill { height: 100%; border-radius: 4px; }
+.adh-pct { font-size: 11px; font-family: 'DM Mono', monospace; color: var(--txt2); width: 32px; text-align: right; flex-shrink: 0; }
+.imc-strip { display: flex; align-items: center; gap: 14px; padding: 12px 14px; border-radius: 12px; background: var(--s2); border: 1px solid var(--border); margin-top: 8px; }
+.imc-val { font-size: 28px; font-weight: 700; font-family: 'DM Mono', monospace; line-height: 1; }
+.imc-class { font-size: 13px; font-weight: 700; }
+.imc-sub { font-size: 11px; color: var(--txt2); margin-top: 3px; line-height: 1.5; }
+.wt-chart { width: 100%; height: 70px; display: block; margin: 8px 0 4px; overflow: visible; }
+.empty-state { text-align: center; padding: 18px; font-size: 13px; color: var(--txt3); }
 </style>
 
 <div class="hdr" id="hdr">
@@ -312,7 +364,8 @@ body {
 <div class="bar">
   <button class="btn btn-shop" onclick="openSheet('shop')">🛒 Compras</button>
   <button class="btn btn-ori"  onclick="openSheet('ori')">🌿 Orientações</button>
-  <button class="btn btn-cal"  onclick="openSheet('cal')">📅 Agenda</button>
+  <button class="btn btn-cal"  onclick="openSheet('cal')">📋 Tarefas</button>
+  <button class="btn btn-dash" onclick="openSheet('dash')">📊 Dashboard</button>
 </div>
 
 <!-- SHOPPING SHEET -->
@@ -511,13 +564,25 @@ body {
   <div class="sheet">
     <div class="handle"></div>
     <div class="sh-hdr">
-      <span class="sh-title">📅 Google Agenda</span>
+      <span class="sh-title">📋 Tarefas do Plano</span>
       <button class="sh-close" onclick="closeSheet('calOverlay')">✕</button>
     </div>
     <div class="sh-body">
-      <p class="cal-intro">Toque em qualquer refeição para criar um lembrete recorrente no Google Agenda — sem precisar fazer login. O evento se repete a cada 5 dias automaticamente.</p>
+      <p class="cal-intro">Toque em qualquer refeição para criar uma tarefa recorrente no Google Agenda com a lista completa do que comer — sem precisar fazer login. A tarefa se repete a cada 5 dias automaticamente.</p>
       <div id="calLinks"></div>
     </div>
+  </div>
+</div>
+
+<!-- DASHBOARD SHEET -->
+<div class="overlay" id="dashOverlay" onclick="maybeClose(event,'dashOverlay')">
+  <div class="sheet">
+    <div class="handle"></div>
+    <div class="sh-hdr">
+      <span class="sh-title">📊 Dashboard</span>
+      <button class="sh-close" onclick="closeSheet('dashOverlay')">✕</button>
+    </div>
+    <div class="sh-body" id="dashBody"></div>
   </div>
 </div>
 
@@ -629,17 +694,20 @@ const PLAN = [
 
 // ── STATE ─────────────────────────────────────────────────────────────
 const SK = 'diet_v3';
-let S = { startDate: null, checked: {}, open: {}, water: {} };
+let S = { startDate: null, checked: {}, open: {}, water: {}, weight: [], measures: {}, activities: [] };
 let vDay = 0;
 let shopSel = new Set([0]);
 
 function load() {
   try {
     const r = JSON.parse(localStorage.getItem(SK)||'{}');
-    S.startDate = r.startDate || null;
-    S.checked   = r.checked   || {};
-    S.open      = r.open      || {};
-    S.water     = r.water     || {};
+    S.startDate  = r.startDate  || null;
+    S.checked    = r.checked    || {};
+    S.open       = r.open       || {};
+    S.water      = r.water      || {};
+    S.weight     = r.weight     || [];
+    S.measures   = r.measures   || {};
+    S.activities = r.activities || [];
   } catch(e) {}
 }
 function save() { try { localStorage.setItem(SK, JSON.stringify(S)); } catch(e) {} }
@@ -774,6 +842,7 @@ function togItem(id,idx,locked) { if(locked) return; togChk(id,idx); render(); }
 function openSheet(id) {
   if(id==='shop'){ renderChips(); renderShopList(); document.getElementById('shopOverlay').classList.add('open'); }
   else if(id==='ori'){ document.getElementById('oriOverlay').classList.add('open'); }
+  else if(id==='dash'){ renderDash(); document.getElementById('dashOverlay').classList.add('open'); }
   else { renderCal(); document.getElementById('calOverlay').classList.add('open'); }
 }
 function closeSheet(id) { document.getElementById(id).classList.remove('open'); }
@@ -855,15 +924,16 @@ function calFmt(d) {
   return d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0')+'T'+
     String(d.getHours()).padStart(2,'0')+String(d.getMinutes()).padStart(2,'0')+'00';
 }
-function calUrl(mealName,time,di) {
+function calUrl(meal,di) {
   let base;
   if(S.startDate){ base=parse(S.startDate); base.setDate(base.getDate()+di); }
   else { base=today(); }
-  const [h,m]=time.split(':').map(Number);
+  const [h,m]=meal.time.split(':').map(Number);
   const s=new Date(base.getFullYear(),base.getMonth(),base.getDate(),h,m);
   const e=new Date(s.getTime()+30*60000);
-  const txt=encodeURIComponent('🥗 '+mealName+' — Plano Alimentar');
-  const det=encodeURIComponent('Dia '+(di+1)+' do ciclo de 5 dias\n'+NAMES[di]);
+  const txt=encodeURIComponent('🥗 '+meal.name+' — Plano Alimentar');
+  const itemLines=meal.items.filter(i=>!i.startsWith('→')).join('\n• ');
+  const det=encodeURIComponent('📋 O que comer:\n• '+itemLines+'\n\nDia '+(di+1)+' do ciclo — '+NAMES[di]);
   const dates=calFmt(s)+'/'+calFmt(e);
   const recur=encodeURIComponent('RRULE:FREQ=DAILY;INTERVAL=5;COUNT=73');
   return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${txt}&details=${det}&dates=${dates}&ctz=America%2FSao_Paulo&recur=${recur}`;
@@ -874,7 +944,7 @@ function renderCal() {
   PLAN.forEach((day,di)=>{
     h+=`<div class="cal-day">${NAMES[di]}</div><div class="cal-links">`;
     day.meals.forEach(m=>{
-      const url=calUrl(m.name,m.time,di);
+      const url=calUrl(m,di);
       h+=`<a class="cal-link" href="${url}" target="_blank" rel="noopener">
         <span class="cal-link-ic">${m.ic}</span>
         <div class="cal-link-info">
@@ -887,6 +957,296 @@ function renderCal() {
     h+='</div>';
   });
   document.getElementById('calLinks').innerHTML=h;
+}
+
+// ── DASHBOARD ─────────────────────────────────────────────────────────
+function fmtDateBR(s) {
+  if(!s) return '';
+  const [y,m,d] = s.split('-');
+  return `${d}/${m}/${y}`;
+}
+function todayStr() { return fmt(today()); }
+
+function imcClass(imc) {
+  if(imc<18.5) return {txt:'Abaixo do peso', cls:'trend-up'};
+  if(imc<25)   return {txt:'Peso normal',    cls:'trend-dn'};
+  if(imc<30)   return {txt:'Sobrepeso',      cls:'trend-up'};
+  return               {txt:'Obesidade',     cls:'trend-up'};
+}
+
+function showToast(msg) {
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2200);
+}
+
+// ── weight ──
+function saveWeight() {
+  const kg = parseFloat(document.getElementById('wt-kg').value);
+  const dt = document.getElementById('wt-date').value || todayStr();
+  if(isNaN(kg)||kg<20||kg>300){ showToast('⚠️ Peso inválido'); return; }
+  S.weight.push({kg, date:dt});
+  S.weight.sort((a,b)=>a.date.localeCompare(b.date));
+  save();
+  document.getElementById('wt-kg').value='';
+  renderDash();
+  showToast('✅ Peso salvo!');
+}
+function deleteWeight(idx) {
+  S.weight.splice(idx,1); save(); renderDash();
+}
+
+// ── measures ──
+function saveMeasures() {
+  const cin = parseFloat(document.getElementById('m-cin').value)||null;
+  const qua = parseFloat(document.getElementById('m-qua').value)||null;
+  const alt = parseFloat(document.getElementById('m-alt').value)||null;
+  S.measures = { cintura:cin, quadril:qua, altura:alt };
+  save(); renderDash(); showToast('✅ Medidas salvas!');
+}
+
+// ── activities ──
+function saveActivity() {
+  const tipo = document.getElementById('act-tipo').value;
+  const dur  = parseInt(document.getElementById('act-dur').value)||0;
+  const dt   = document.getElementById('act-date').value || todayStr();
+  const nota = document.getElementById('act-nota').value.trim();
+  if(!dur){ showToast('⚠️ Informe a duração'); return; }
+  S.activities.unshift({tipo, dur, date:dt, nota});
+  save();
+  document.getElementById('act-dur').value='';
+  document.getElementById('act-nota').value='';
+  renderDash();
+  showToast('✅ Atividade salva!');
+}
+function deleteActivity(idx) {
+  S.activities.splice(idx,1); save(); renderDash();
+}
+
+// ── render helpers ──
+function renderStatCards() {
+  const lastWt = S.weight.length ? S.weight[S.weight.length-1].kg : null;
+  const imc    = (lastWt && S.measures.altura) ? lastWt/((S.measures.altura/100)**2) : null;
+
+  // adherence today
+  const todayKey = todayStr();
+  const total = PLAN[vDay].meals.reduce((a,m)=>a+m.items.filter(i=>!i.startsWith('→')).length,0);
+  const done  = Object.keys(S.checked).filter(k=>k.startsWith(todayKey+'_')).length;
+  const adhPct= total>0 ? Math.round(done/total*100) : 0;
+
+  // activities last 7 days
+  const cutoff = new Date(today()); cutoff.setDate(cutoff.getDate()-6);
+  const cutStr = fmt(cutoff);
+  const actWk  = S.activities.filter(a=>a.date>=cutStr).length;
+
+  let h='<div class="stat-grid">';
+  // weight card
+  h+=`<div class="stat-card">
+    <div class="stat-num">${lastWt!=null?lastWt.toFixed(1):'–'}<span class="stat-unit">${lastWt!=null?' kg':''}</span></div>
+    <div class="stat-lbl">Peso atual</div>`;
+  if(S.weight.length>=2){
+    const diff=(S.weight[S.weight.length-1].kg-S.weight[S.weight.length-2].kg);
+    const sign=diff>0?'▲':'▼';
+    h+=`<div class="stat-trend ${diff>0?'trend-up':'trend-dn'}">${sign} ${Math.abs(diff).toFixed(1)} kg</div>`;
+  }
+  h+='</div>';
+  // imc card
+  h+=`<div class="stat-card">
+    <div class="stat-num">${imc!=null?imc.toFixed(1):'–'}</div>
+    <div class="stat-lbl">IMC</div>`;
+  if(imc!=null){ const ic=imcClass(imc); h+=`<div class="stat-trend ${ic.cls}">${ic.txt}</div>`; }
+  h+='</div>';
+  // activities card
+  h+=`<div class="stat-card">
+    <div class="stat-num">${actWk}<span class="stat-unit"> ativ.</span></div>
+    <div class="stat-lbl">Atividades (7d)</div>
+  </div>`;
+  // adherence card
+  h+=`<div class="stat-card">
+    <div class="stat-num">${adhPct}<span class="stat-unit">%</span></div>
+    <div class="stat-lbl">Adesão hoje</div>
+  </div>`;
+  h+='</div>';
+  return h;
+}
+
+function renderWeightSection() {
+  let h=`<div class="dash-sec">
+  <div class="dash-sec-title">⚖️ Peso</div>
+  <div class="dash-form">
+    <div class="input-row">
+      <div class="input-grp"><div class="input-lbl">Peso (kg)</div><input class="dash-input" id="wt-kg" type="number" step="0.1" min="30" max="250" placeholder="72.5"></div>
+      <div class="input-grp"><div class="input-lbl">Data</div><input class="dash-input" id="wt-date" type="date" value="${todayStr()}"></div>
+      <button class="dash-btn" onclick="saveWeight()">Salvar</button>
+    </div>
+  </div>`;
+
+  if(S.weight.length>=2){
+    // SVG chart
+    const pts=S.weight.slice(-10);
+    const vals=pts.map(p=>p.kg);
+    const mn=Math.min(...vals)-1, mx=Math.max(...vals)+1;
+    const W=280,H=60,pad=10;
+    const x=i=>(i/(pts.length-1))*(W-2*pad)+pad;
+    const y=v=>H-pad-((v-mn)/(mx-mn||1))*(H-2*pad);
+    const poly=pts.map((p,i)=>`${x(i).toFixed(1)},${y(p.kg).toFixed(1)}`).join(' ');
+    h+=`<svg class="wt-chart" viewBox="0 0 ${W} ${H}">
+      <polyline points="${poly}" fill="none" stroke="#2577f5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      ${pts.map((p,i)=>`<circle cx="${x(i).toFixed(1)}" cy="${y(p.kg).toFixed(1)}" r="3" fill="#2577f5"/>`).join('')}
+    </svg>`;
+  }
+
+  if(S.weight.length){
+    h+=`<div class="hist-list">`;
+    [...S.weight].reverse().slice(0,8).forEach((w,ri)=>{
+      const idx=S.weight.length-1-ri;
+      h+=`<div class="hist-item">
+        <div class="hist-date">${fmtDateBR(w.date)}</div>
+        <div class="hist-val">${w.kg.toFixed(1)} kg</div>
+        <button class="hist-del" onclick="deleteWeight(${idx})">🗑</button>
+      </div>`;
+    });
+    h+='</div>';
+  } else {
+    h+='<div class="empty-state">Nenhum peso registrado</div>';
+  }
+  h+='</div>';
+  return h;
+}
+
+function renderMeasuresSection() {
+  const m=S.measures;
+  const imc=(m.cintura&&m.altura) ? null : (S.weight.length&&m.altura ? S.weight[S.weight.length-1].kg/((m.altura/100)**2) : null);
+  const wtLast=S.weight.length?S.weight[S.weight.length-1].kg:null;
+  const imcVal=(wtLast&&m.altura)?(wtLast/((m.altura/100)**2)):null;
+
+  let h=`<div class="dash-sec">
+  <div class="dash-sec-title">📏 Medidas Corporais</div>
+  <div class="dash-form">
+    <div class="input-row">
+      <div class="input-grp"><div class="input-lbl">Cintura (cm)</div><input class="dash-input" id="m-cin" type="number" step="0.5" placeholder="85" value="${m.cintura||''}"></div>
+      <div class="input-grp"><div class="input-lbl">Quadril (cm)</div><input class="dash-input" id="m-qua" type="number" step="0.5" placeholder="98" value="${m.quadril||''}"></div>
+      <div class="input-grp"><div class="input-lbl">Altura (cm)</div><input class="dash-input" id="m-alt" type="number" step="0.5" placeholder="170" value="${m.altura||''}"></div>
+    </div>
+    <div class="input-row"><button class="dash-btn" style="width:100%" onclick="saveMeasures()">Salvar medidas</button></div>
+  </div>`;
+
+  if(imcVal!=null){
+    const ic=imcClass(imcVal);
+    h+=`<div class="imc-strip">
+      <div><div class="imc-val" style="color:${imcVal<25?'var(--green)':imcVal<30?'var(--gold)':'var(--red)'}">${imcVal.toFixed(1)}</div></div>
+      <div><div class="imc-class ${ic.cls}">${ic.txt}</div>
+        <div class="imc-sub">Altura: ${m.altura} cm · Peso: ${wtLast.toFixed(1)} kg${m.cintura?'<br>Cintura: '+m.cintura+' cm':''}</div>
+      </div>
+    </div>`;
+  }
+  h+='</div>';
+  return h;
+}
+
+function renderActivitiesSection() {
+  const TIPOS={
+    'caminhada':'🚶 Caminhada','corrida':'🏃 Corrida','musculacao':'💪 Musculação',
+    'yoga':'🧘 Yoga/Pilates','bicicleta':'🚴 Bicicleta','natacao':'🏊 Natação',
+    'esporte':'⚽ Esporte','outro':'🤸 Outro'
+  };
+  let h=`<div class="dash-sec">
+  <div class="dash-sec-title">🏃 Atividades Físicas</div>
+  <div class="dash-form">
+    <div class="input-row">
+      <div class="input-grp" style="min-width:140px"><div class="input-lbl">Tipo</div>
+        <select class="dash-select" id="act-tipo">
+          ${Object.entries(TIPOS).map(([v,l])=>`<option value="${v}">${l}</option>`).join('')}
+        </select>
+      </div>
+      <div class="input-grp"><div class="input-lbl">Duração (min)</div><input class="dash-input" id="act-dur" type="number" min="1" max="300" placeholder="45"></div>
+      <div class="input-grp"><div class="input-lbl">Data</div><input class="dash-input" id="act-date" type="date" value="${todayStr()}"></div>
+    </div>
+    <div class="input-row">
+      <div class="input-grp" style="flex:3"><div class="input-lbl">Observação (opcional)</div><input class="dash-input" id="act-nota" type="text" placeholder="Ex: parque, academia..."></div>
+      <button class="dash-btn" onclick="saveActivity()">Salvar</button>
+    </div>
+  </div>`;
+
+  if(S.activities.length){
+    h+=`<div class="hist-list">`;
+    S.activities.slice(0,8).forEach((a,i)=>{
+      const lbl=TIPOS[a.tipo]||'🤸 Outro';
+      h+=`<div class="hist-item">
+        <div class="hist-date">${fmtDateBR(a.date)}</div>
+        <div style="flex:1">
+          <div class="hist-val">${lbl} · ${a.dur} min</div>
+          ${a.nota?`<div class="hist-sub">${a.nota}</div>`:''}
+        </div>
+        <button class="hist-del" onclick="deleteActivity(${i})">🗑</button>
+      </div>`;
+    });
+    h+='</div>';
+  } else {
+    h+='<div class="empty-state">Nenhuma atividade registrada</div>';
+  }
+  h+='</div>';
+  return h;
+}
+
+function renderAdherenceSection() {
+  // last 7 days adherence
+  let h=`<div class="dash-sec"><div class="dash-sec-title">📈 Aderência ao Plano (7 dias)</div>`;
+  const days=[];
+  for(let i=6;i>=0;i--){ const d=new Date(today()); d.setDate(d.getDate()-i); days.push(fmt(d)); }
+  let hasData=false;
+  days.forEach(dayStr=>{
+    // which vDay is this?
+    const di=S.startDate?((Math.floor((parse(dayStr)-parse(S.startDate))/86400000)%5+5)%5):0;
+    const total=PLAN[di].meals.reduce((a,m)=>a+m.items.filter(it=>!it.startsWith('→')).length,0);
+    const done=Object.keys(S.checked).filter(k=>k.startsWith(dayStr+'_')).length;
+    if(done>0) hasData=true;
+    const pct=total>0?Math.min(100,Math.round(done/total*100)):0;
+    const col=pct>=80?'var(--green)':pct>=50?'var(--gold)':'var(--red)';
+    const [,mm,dd]=dayStr.split('-');
+    h+=`<div class="adh-row">
+      <div class="adh-lbl">${dd}/${mm}</div>
+      <div class="adh-bar-bg"><div class="adh-fill" style="width:${pct}%;background:${col}"></div></div>
+      <div class="adh-pct">${pct}%</div>
+    </div>`;
+  });
+  if(!hasData) h+='<div class="empty-state" style="padding:8px">Marque itens no plano para ver a aderência</div>';
+  h+='</div>';
+  return h;
+}
+
+function renderWaterHistorySection() {
+  let h=`<div class="dash-sec"><div class="dash-sec-title">💧 Histórico de Água (7 dias)</div>`;
+  const days=[];
+  for(let i=6;i>=0;i--){ const d=new Date(today()); d.setDate(d.getDate()-i); days.push(fmt(d)); }
+  const vals=days.map(d=>S.water[d]||0);
+  const maxV=Math.max(...vals,1);
+  h+='<div class="water-bars">';
+  days.forEach((d,i)=>{
+    const v=vals[i];
+    const pct=Math.round(v/maxV*100);
+    const [,mm,dd]=d.split('-');
+    const isGoal=v>=10;
+    h+=`<div class="w-bar-wrap">
+      <div class="w-bar${isGoal?' goal':''}" style="height:${pct}%"></div>
+      <div class="w-bar-d">${dd}/${mm}<br>${v>0?v:'–'}</div>
+    </div>`;
+  });
+  h+='</div>';
+  const avg=vals.reduce((a,b)=>a+b,0)/7;
+  h+=`<div style="font-size:11px;color:var(--txt2);text-align:center">Média 7d: <strong style="color:var(--txt)">${avg.toFixed(1)}</strong> copos/dia</div>`;
+  h+='</div>';
+  return h;
+}
+
+function renderDash() {
+  document.getElementById('dashBody').innerHTML =
+    renderStatCards() +
+    renderWeightSection() +
+    renderMeasuresSection() +
+    renderActivitiesSection() +
+    renderAdherenceSection() +
+    renderWaterHistorySection();
 }
 
 // ── INIT ──────────────────────────────────────────────────────────────
